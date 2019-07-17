@@ -5,6 +5,7 @@ type Game struct {
 	URL         string `json:"url"`
 	PGN         string `json:"pgn"`
 	TimeControl string `json:"time_control"`
+	StartTime   int    `json:"start_time"`
 	EndTime     int    `json:"end_time"`
 	Rated       bool   `json:"rated"`
 	FEN         string `json:"fen"`
@@ -12,6 +13,8 @@ type Game struct {
 	Rules       string `json:"rules"`
 	White       player `json:"white"`
 	Black       player `json:"black"`
+	Tournament  string `json:"tournament"`
+	Match       string `json:"match"`
 }
 
 type player struct {
