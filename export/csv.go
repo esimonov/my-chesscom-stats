@@ -38,19 +38,21 @@ func (e *CSVExporter) AllGames(filename string) error {
 
 	gameArchivesURLList, err := e.Client.GetMonthlyGameArchivesURLList()
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	out, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0777)
 	if err != nil {
-		log.Panicln("Cannot open CSV file: ", err)
+		return fmt.Errorf("Cannot open CSV file: %s", err)
 	}
 	defer closeCSVFile(out)
 
 	w := csv.NewWriter(out)
 	if err = w.Write(model.GetGameExportCSVHeader()); err != nil {
-		log.Panicln("Cannot write CSV header: ", err)
+		return fmt.Errorf("Cannot write CSV header: %s", err)
 	}
+
+	countryURLsToNames := make(map[string]string, 1)
 
 	for _, gamesByMonthURL := range gameArchivesURLList {
 		urlLen := len(gamesByMonthURL)
@@ -63,7 +65,24 @@ func (e *CSVExporter) AllGames(filename string) error {
 		}
 
 		for _, g := range games {
-			if err = w.Write(g.ToGameExport(e.Client.Username).ToStringSlice()); err != nil {
+			opponent, err := e.Client.GetPlayerByUsername(g.GetOpponentUsername(e.Client.Username))
+			if err != nil {
+				log.Println(err)
+				continue
+			}
+
+			countryName, ok := countryURLsToNames[opponent.CountryURL]
+			if !ok {
+				country, err := e.Client.GetCountryByURL(opponent.CountryURL)
+				if err != nil {
+					log.Println(err)
+					continue
+				}
+				countryName = country.Name
+				countryURLsToNames[opponent.CountryURL] = countryName
+			}
+
+			if err = w.Write(g.ToGameExport(e.Client.Username, countryName).ToStringSlice()); err != nil {
 				log.Println(err)
 			}
 		}

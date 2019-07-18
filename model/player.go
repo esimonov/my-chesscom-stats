@@ -9,7 +9,7 @@ type Player struct {
 	Name       string `json:"name,omitempty"`
 	Username   string `json:"username,omitempty"`
 	Followers  int    `json:"followers,omitempty"`
-	Country    string `json:"country,omitempty"`
+	CountryURL string `json:"country,omitempty"`
 	LastOnline int    `json:"last_online,omitempty"`
 	Joined     int    `json:"joined,omitempty"`
 	Status     string `json:"status,omitempty"`

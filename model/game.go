@@ -25,10 +25,19 @@ type player struct {
 }
 
 // ToGameExport transorms the game into exported form.
-func (g *Game) ToGameExport(myUsername string) *GameExport {
+func (g *Game) ToGameExport(myUsername, countryName string) *GameExport {
 	ge := new(GameExport)
 	ge.parsePGNTags(g.PGN)
 	ge.parsePlayers(g.White, g.Black, myUsername)
 	ge.TimeControl = g.TimeControl
+	ge.OpponentCountry = countryName
 	return ge
+}
+
+// GetOpponentUsername returns username of your opponent in the game.
+func (g *Game) GetOpponentUsername(myUsername string) string {
+	if g.White.Username == myUsername {
+		return g.Black.Username
+	}
+	return g.White.Username
 }
