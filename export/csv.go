@@ -32,7 +32,7 @@ func (e *CSVExporter) AllGames(filename string) error {
 	if filename == "" {
 		return fmt.Errorf("Invalid filename %s", filename)
 	}
-	if !strings.Contains(filename, ".csv") {
+	if !strings.Contains(filename, csvExtension) {
 		filename = strings.Join([]string{filename, csvExtension}, "")
 	}
 

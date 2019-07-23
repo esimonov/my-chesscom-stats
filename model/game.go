@@ -27,7 +27,7 @@ type player struct {
 // ToGameExport transorms the game into exported form.
 func (g *Game) ToGameExport(myUsername, countryName string) *GameExport {
 	ge := new(GameExport)
-	ge.parsePGNTags(g.PGN)
+	ge.parsePGN(g.PGN)
 	ge.parsePlayers(g.White, g.Black, myUsername)
 	ge.TimeControl = g.TimeControl
 	ge.OpponentCountry = countryName

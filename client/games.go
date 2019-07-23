@@ -7,9 +7,7 @@ import (
 	"github.com/esimonov/my-chesscom-stats/model"
 )
 
-var (
-	monthlyGameArchivesURL = "https://api.chess.com/pub/player/%s/games/archives"
-)
+var monthlyGameArchivesURL = "https://api.chess.com/pub/player/%s/games/archives"
 
 // Games are how games are returned by https://api.chess.com/pub/player/{username}/games/{YYYY}/{MM}.
 type Games struct {

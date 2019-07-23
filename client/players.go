@@ -7,9 +7,11 @@ import (
 	"github.com/esimonov/my-chesscom-stats/model"
 )
 
+var playerURL = "https://api.chess.com/pub/player/%s"
+
 // GetPlayerByUsername returns chess.com user from https://api.chess.com/pub/player/{username}.
 func (c *Client) GetPlayerByUsername(username string) (*model.Player, error) {
-	resp, err := c.internalClient.Get(fmt.Sprintf("https://api.chess.com/pub/player/%s", username))
+	resp, err := c.internalClient.Get(fmt.Sprintf(playerURL, username))
 	if err != nil {
 		return nil, fmt.Errorf("Cannot request player: %s", err)
 	}
