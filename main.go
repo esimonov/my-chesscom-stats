@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/esimonov/my-chesscom-stats/client"
-	"github.com/esimonov/my-chesscom-stats/export"
+	"github.com/esimonov/my-chesscom-stats/exporter"
+	csv "github.com/esimonov/my-chesscom-stats/exporter/csv"
 )
 
 var username string
@@ -18,13 +18,19 @@ func init() {
 }
 
 func main() {
-	c := client.NewClient(username)
-	outFilename := fmt.Sprintf("%s_chess_stats.csv", username)
+	dispatcher := exporter.NewDispatcher(username)
 
-	exporters := []export.Exporter{export.NewCSVExporter(c)}
-	for _, e := range exporters {
-		if err := e.AllGames(outFilename); err != nil {
-			panic(err)
-		}
+	csvFilename := fmt.Sprintf("%s_chess_stats.csv", username)
+	csvExporter, err := csv.NewExporter(csvFilename, username)
+	if err != nil {
+		panic(err)
 	}
+
+	exporters := []exporter.Exporter{csvExporter}
+
+	if err = dispatcher.AllGames(exporters); err != nil {
+		panic(err)
+	}
+
+	fmt.Println("Success!")
 }
