@@ -14,8 +14,6 @@ Exporting all games played by the `USERNAME` to `FILENAME.csv` only requires thi
 
 ```go
 import (
-    "fmt"
-
     "github.com/esimonov/my-chesscom-stats/exporter"
     csv "github.com/esimonov/my-chesscom-stats/exporter/csv"
 )
